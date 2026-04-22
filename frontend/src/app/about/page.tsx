@@ -8,19 +8,14 @@ import { MapPin, Brain, TrendingUp, Users, BookOpen } from "lucide-react";
 
 const team = [
   {
-    name: "Dr. Sarah Nakiganda",
-    role: "ML Lead",
-    bio: "PhD in Applied Statistics, Makerere University. 8 years building predictive models for East African markets.",
+    name: "Geno Owor Joshua",
+    role: "Lead Developer",
+    bio: "Full-stack developer specializing in AI-powered web applications and data visualization.",
   },
   {
-    name: "James Okello",
-    role: "Urban Analyst",
-    bio: "GIS specialist mapping Kampala's informal economy since 2019. Published researcher on SME location dynamics.",
-  },
-  {
-    name: "Grace Nabisere",
-    role: "Product Lead",
-    bio: "Former Y Combinator cohort founder. Built fintech products reaching 2M+ Ugandan users.",
+    name: "Mokili Promise Pierre",
+    role: "Lead Developer",
+    bio: "Backend engineer with expertise in machine learning models and API development.",
   },
 ];
 
