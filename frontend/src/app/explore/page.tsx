@@ -6,7 +6,9 @@ import { Nav } from "@/components/Nav";
 import { ResultsPanel } from "@/components/ResultsPanel";
 import { predict, PredictResponse } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
 import { motion } from "framer-motion";
+import { Bookmark } from "lucide-react";
 
 const KampalaMap = dynamic(() => import("@/components/KampalaMap"), {
   ssr: false,
@@ -19,16 +21,19 @@ const KampalaMap = dynamic(() => import("@/components/KampalaMap"), {
 
 export default function ExplorePage() {
   const { t } = useI18n();
+  const { user } = useAuth();
   const [point, setPoint] = useState<{ lat: number; lng: number } | null>(null);
   const [data, setData] = useState<PredictResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   async function onPick(lat: number, lng: number) {
     setPoint({ lat, lng });
     setLoading(true);
     setError(null);
     setData(null);
+    setSaved(false);
     try {
       const r = await predict(lat, lng);
       setData(r);
@@ -36,6 +41,28 @@ export default function ExplorePage() {
       setError((e as Error).message);
     } finally {
       setLoading(false);
+    }
+  }
+
+  function saveLocation() {
+    if (!data || !user) return;
+    const savedLocations = JSON.parse(localStorage.getItem("venture_saved_locations") || "[]");
+    const exists = savedLocations.find(
+      (l: { lat: number; lng: number }) =>
+        Math.abs(l.lat - data.location.lat) < 0.0001 && Math.abs(l.lng - data.location.lng) < 0.0001
+    );
+    if (!exists) {
+      savedLocations.push({
+        id: crypto.randomUUID(),
+        name: data.location.neighborhood,
+        lat: data.location.lat,
+        lng: data.location.lng,
+        topBusiness: data.recommendations[0]?.category || "Unknown",
+        score: Math.round(data.recommendations[0]?.score * 100) || 0,
+        date: new Date().toISOString(),
+      });
+      localStorage.setItem("venture_saved_locations", JSON.stringify(savedLocations));
+      setSaved(true);
     }
   }
 
@@ -70,6 +97,22 @@ export default function ExplorePage() {
 
         {/* Panel */}
         <aside className="row-start-2 lg:row-start-1 bg-[var(--surface)] border-l border-[var(--border)] lg:min-h-0 min-h-[50vh] overflow-hidden">
+          {data && user && (
+            <div className="px-7 py-4 border-b border-[var(--border)] flex justify-end">
+              <button
+                onClick={saveLocation}
+                disabled={saved}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all ${
+                  saved
+                    ? "bg-[var(--success)]/20 text-[var(--success)]"
+                    : "bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--accent)]"
+                }`}
+              >
+                <Bookmark size={14} fill={saved ? "currentColor" : "none"} />
+                {saved ? "Saved" : "Save location"}
+              </button>
+            </div>
+          )}
           <ResultsPanel data={data} loading={loading} error={error} />
         </aside>
       </div>

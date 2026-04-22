@@ -103,7 +103,8 @@ export function ResultsPanel({
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
-        className="flex-1 overflow-y-auto px-7 py-8"
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto px-7 py-8 scroll-smooth scrollbar-thin scrollbar-thumb-[var(--border-strong)] scrollbar-track-transparent hover:scrollbar-thumb-[var(--ink-muted)]"
       >
         {/* Header */}
         <div className="flex items-baseline justify-between">
