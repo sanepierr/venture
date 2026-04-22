@@ -4,15 +4,14 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Nav } from "@/components/Nav";
 import { ResultsPanel } from "@/components/ResultsPanel";
+import { Chatbot } from "@/components/Chatbot";
 import { predict, PredictResponse } from "@/lib/api";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { motion } from "framer-motion";
 import { Bookmark } from "lucide-react";
-import { Chatbot } from "@/components/Chatbot";
 
 const KampalaMap = dynamic(() => import("@/components/KampalaMap"), {
-
   ssr: false,
   loading: () => (
     <div className="h-full w-full flex items-center justify-center bg-[var(--surface)] text-sm text-[var(--ink-muted)] font-mono">
@@ -71,59 +70,59 @@ export default function ExplorePage() {
   return (
     <main className="h-screen flex flex-col overflow-hidden">
       <Nav />
-      <div className="flex-1 pt-[68px] grid lg:grid-cols-[1fr_440px] grid-rows-[1fr_auto] lg:grid-rows-1">
-        {/* Map */}
-        <div className="relative row-start-1">
-          <KampalaMap point={point} onPick={onPick} />
+      <div className="flex-1 pt-[68px] overflow-hidden">
+        <div className="grid lg:grid-cols-[1fr_440px] h-full">
+          {/* Map */}
+          <div className="relative h-full">
+            <KampalaMap point={point} onPick={onPick} />
 
-          {/* Floating overlay title */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="absolute top-6 left-6 z-[400] max-w-sm"
-          >
-            <div className="bg-[var(--surface)]/90 backdrop-blur-md border border-[var(--border)] rounded-2xl p-4 shadow-lg">
-              <div className="font-serif text-xl leading-tight">{t("explore.title")}</div>
-              <div className="mt-1 text-xs text-[var(--ink-muted)]">{t("explore.sub")}</div>
-            </div>
-          </motion.div>
+            {/* Floating overlay title */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="absolute top-6 left-6 z-[400] max-w-sm"
+            >
+              <div className="bg-[var(--surface)]/90 backdrop-blur-md border border-[var(--border)] rounded-2xl p-4 shadow-lg">
+                <div className="font-serif text-xl leading-tight">{t("explore.title")}</div>
+                <div className="mt-1 text-xs text-[var(--ink-muted)]">{t("explore.sub")}</div>
+              </div>
+            </motion.div>
 
-          {/* Coords pill */}
-          {point && (
-            <div className="absolute bottom-6 left-6 z-[400] px-3 py-1.5 rounded-full bg-[var(--surface)]/90 backdrop-blur-md border border-[var(--border)] font-mono text-xs text-[var(--ink-muted)]">
-              {point.lat.toFixed(4)}°, {point.lng.toFixed(4)}°
-            </div>
-          )}
-        </div>
-
-        {/* Panel */}
-        <aside className="row-start-2 lg:row-start-1 bg-[var(--surface)] border-l border-[var(--border)] h-full overflow-hidden flex flex-col">
-          {data && user && (
-            <div className="px-7 py-4 border-b border-[var(--border)] flex justify-end shrink-0">
-              <button
-                onClick={saveLocation}
-                disabled={saved}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all ${
-                  saved
-                    ? "bg-[var(--success)]/20 text-[var(--success)]"
-                    : "bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--accent)]"
-                }`}
-              >
-                <Bookmark size={14} fill={saved ? "currentColor" : "none"} />
-                {saved ? "Saved" : "Save location"}
-              </button>
-            </div>
-          )}
-          <div className="flex-1 overflow-hidden">
-            <ResultsPanel data={data} loading={loading} error={error} />
+            {/* Coords pill */}
+            {point && (
+              <div className="absolute bottom-6 left-6 z-[400] px-3 py-1.5 rounded-full bg-[var(--surface)]/90 backdrop-blur-md border border-[var(--border)] font-mono text-xs text-[var(--ink-muted)]">
+                {point.lat.toFixed(4)}°, {point.lng.toFixed(4)}°
+              </div>
+            )}
           </div>
-          {data && <Chatbot data={data} />}
-        </aside>
 
+          {/* Panel */}
+          <aside className="bg-[var(--surface)] border-l border-[var(--border)] h-full flex flex-col overflow-hidden">
+            {data && user && (
+              <div className="px-7 py-4 border-b border-[var(--border)] flex justify-end shrink-0">
+                <button
+                  onClick={saveLocation}
+                  disabled={saved}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm transition-all ${
+                    saved
+                      ? "bg-[var(--success)]/20 text-[var(--success)]"
+                      : "bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--accent)]"
+                  }`}
+                >
+                  <Bookmark size={14} fill={saved ? "currentColor" : "none"} />
+                  {saved ? "Saved" : "Save location"}
+                </button>
+              </div>
+            )}
+            <div className="flex-1 overflow-auto">
+              <ResultsPanel data={data} loading={loading} error={error} />
+            </div>
+            {data && <Chatbot data={data} />}
+          </aside>
+        </div>
       </div>
     </main>
   );
 }
-
 
