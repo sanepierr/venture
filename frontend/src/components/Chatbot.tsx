@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Send, X } from "lucide-react";
-import { PredictResponse, Prediction } from "@/lib/api";
+import { PredictResponse } from "@/lib/api";
 
 interface Message {
   role: "user" | "bot";
@@ -15,6 +15,7 @@ export function Chatbot({ data }: { data: PredictResponse | null }) {
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && inputRef.current) inputRef.current.focus();
@@ -24,6 +25,13 @@ export function Chatbot({ data }: { data: PredictResponse | null }) {
     // Reset chat when new data
     if (data) setMessages([]);
   }, [data]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const el = messagesRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [isOpen, messages]);
 
   const getBotResponse = (query: string): string => {
     if (!data) return "Pick a location first!";
@@ -76,6 +84,7 @@ export function Chatbot({ data }: { data: PredictResponse | null }) {
     <motion.div
       initial={false}
       animate={{ height: isOpen ? "auto" : "72px" }}
+      data-lenis-prevent
       className="border-t border-[var(--border)] bg-[var(--surface)] px-7 py-4"
     >
       <AnimatePresence mode="wait">
@@ -105,7 +114,11 @@ export function Chatbot({ data }: { data: PredictResponse | null }) {
                 Ask "Why [top business]?" or "Startup costs?" etc.
               </div>
             )}
-            <div className="max-h-60 overflow-y-auto space-y-2 pr-2 scrollbar-thin">
+            <div
+              ref={messagesRef}
+              data-lenis-prevent
+              className="max-h-60 overflow-y-auto space-y-2 pr-2 scrollbar-thin"
+            >
               <AnimatePresence>
                 {messages.map((msg, i) => (
                   <motion.div
