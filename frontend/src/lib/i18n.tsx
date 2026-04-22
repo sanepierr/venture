@@ -12,7 +12,7 @@ const dict = {
     "nav.launch": "Launch app",
     "hero.eyebrow": "Business intelligence for Uganda",
     "hero.title.1": "Know where",
-    "hero.title.2": "to build.",
+    "hero.title.2": "to invest.",
     "hero.sub":
       "Venture analyses any location in Kampala — schools, taxi stages, markets, and competition — then tells you which business will thrive there, how much it could earn, and whether it will survive its first year.",
     "hero.cta.primary": "Explore a location",
@@ -71,7 +71,7 @@ const dict = {
     "nav.launch": "Tandika",
     "hero.eyebrow": "Amagezi g'ebyobusuubuzi mu Uganda",
     "hero.title.1": "Manya wa",
-    "hero.title.2": "okuzimba.",
+    "hero.title.2": "okutonda.",
     "hero.sub":
       "Venture ekebera ekifo kyonna mu Kampala — amasomero, estegi, n'amakatale — n'eraga bizinensi eyinza okukulaakulana, engeri gy'eyinza okufuna, n'obanga eriwangaala omwaka ogusooka.",
     "hero.cta.primary": "Noonya ekifo",
