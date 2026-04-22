@@ -1,0 +1,14 @@
+# Claude / assistant local metadata (do not commit)
+.claude/
+**/.claude/
+CLAUDE.md
+**/CLAUDE.md
+
+# OS
+.DS_Store
+
+# Python
+backend/.venv/
+__pycache__/
+*.py[cod]
+*.pyo
