@@ -196,14 +196,14 @@ export default function AboutPage() {
             className="max-w-2xl"
           >
             <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              , The team
+              — The developers
             </div>
             <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
-              Built by people who understand Kampala
+              Built by the team behind Venture
             </h2>
           </motion.div>
 
-          <div className="mt-16 grid md:grid-cols-3 gap-6">
+          <div className="mt-16 grid md:grid-cols-2 gap-6">
             {team.map((member, i) => (
               <motion.div
                 key={member.name}
