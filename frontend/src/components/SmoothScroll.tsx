@@ -10,6 +10,25 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+
+    lenis.on("scroll", () => {
+      // Scroll listener for Lenis
+    });
+
+    function handleHashLink(e: HashChangeEvent | PopStateEvent) {
+      const hash = window.location.hash;
+      if (hash) {
+        const target = document.querySelector(hash);
+        if (target) {
+          lenis.scrollTo(target as HTMLElement, { offset: -80 });
+        }
+      }
+    }
+
+    window.addEventListener("hashchange", handleHashLink);
+
+    setTimeout(handleHashLink, 100);
+
     let raf = 0;
     const loop = (time: number) => {
       lenis.raf(time);
@@ -19,6 +38,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     return () => {
       cancelAnimationFrame(raf);
       lenis.destroy();
+      window.removeEventListener("hashchange", handleHashLink);
     };
   }, []);
   return <>{children}</>;

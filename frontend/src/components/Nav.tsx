@@ -48,6 +48,11 @@ export function Nav() {
           <Link href="/explore" className="hover:text-[var(--ink)] transition-colors">
             {t("nav.explore")}
           </Link>
+          {user && (
+            <Link href="/dashboard" className="hover:text-[var(--ink)] transition-colors text-[var(--accent)]">
+              Dashboard
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
