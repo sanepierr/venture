@@ -26,6 +26,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     }
 
     window.addEventListener("hashchange", handleHashLink);
+    window.addEventListener("popstate", handleHashLink);
 
     setTimeout(handleHashLink, 100);
 
@@ -39,6 +40,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       cancelAnimationFrame(raf);
       lenis.destroy();
       window.removeEventListener("hashchange", handleHashLink);
+      window.removeEventListener("popstate", handleHashLink);
     };
   }, []);
   return <>{children}</>;

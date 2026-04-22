@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const users: Array<{ id: string; email: string; password: string; name: string; createdAt: string }> = [];
+import { findUserByEmail } from "@/lib/demo-users";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
     }
 
-    const user = users.find((u) => u.email === email && u.password === password);
-    if (!user) {
+    const user = findUserByEmail(email);
+    if (!user || user.password !== password) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
 

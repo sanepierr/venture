@@ -39,9 +39,9 @@ export function Nav() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-sm text-[var(--ink-muted)]">
-          <a href="#how" className="hover:text-[var(--ink)] transition-colors">
+          <Link href="/#how" className="hover:text-[var(--ink)] transition-colors">
             {t("nav.how")}
-          </a>
+          </Link>
           <Link href="/about" className="hover:text-[var(--ink)] transition-colors">
             {t("nav.about")}
           </Link>

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { Nav } from "@/components/Nav";
 import { ResultsPanel } from "@/components/ResultsPanel";
 import { Chatbot } from "@/components/Chatbot";
@@ -10,6 +10,7 @@ import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { motion } from "framer-motion";
 import { Bookmark } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 const KampalaMap = dynamic(() => import("@/components/KampalaMap"), {
   ssr: false,
@@ -20,16 +21,17 @@ const KampalaMap = dynamic(() => import("@/components/KampalaMap"), {
   ),
 });
 
-export default function ExplorePage() {
+function ExploreContent() {
   const { t } = useI18n();
   const { user } = useAuth();
+  const searchParams = useSearchParams();
   const [point, setPoint] = useState<{ lat: number; lng: number } | null>(null);
   const [data, setData] = useState<PredictResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
-  async function onPick(lat: number, lng: number) {
+  const onPick = useCallback(async (lat: number, lng: number) => {
     setPoint({ lat, lng });
     setLoading(true);
     setError(null);
@@ -43,7 +45,18 @@ export default function ExplorePage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    const latStr = searchParams.get("lat");
+    const lngStr = searchParams.get("lng");
+    if (!latStr || !lngStr) return;
+    const lat = Number(latStr);
+    const lng = Number(lngStr);
+    if (Number.isFinite(lat) && Number.isFinite(lng)) {
+      onPick(lat, lng);
+    }
+  }, [onPick, searchParams]);
 
   function saveLocation() {
     if (!data || !user) return;
@@ -123,6 +136,25 @@ export default function ExplorePage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ExplorePage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="h-screen flex flex-col overflow-hidden">
+          <Nav />
+          <div className="flex-1 pt-[68px] overflow-hidden">
+            <div className="h-full w-full flex items-center justify-center bg-[var(--surface)] text-sm text-[var(--ink-muted)] font-mono">
+              Loading explore…
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <ExploreContent />
+    </Suspense>
   );
 }
 

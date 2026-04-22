@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const users: Array<{ id: string; email: string; password: string; name: string; createdAt: string }> = [];
+import { createUser, findUserByEmail } from "@/lib/demo-users";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,18 +14,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 });
     }
 
-    if (users.find((u) => u.email === email)) {
+    if (findUserByEmail(email)) {
       return NextResponse.json({ error: "Email already registered" }, { status: 400 });
     }
 
-    const user = {
-      id: crypto.randomUUID(),
-      email,
-      password,
-      name,
-      createdAt: new Date().toISOString(),
-    };
-    users.push(user);
+    const user = createUser({ email, password, name });
 
     const { password: _, ...userWithoutPassword } = user;
     return NextResponse.json({ user: userWithoutPassword }, { status: 201 });

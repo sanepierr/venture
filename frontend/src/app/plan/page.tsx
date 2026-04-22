@@ -27,7 +27,7 @@ function PlanContent() {
 
   const handleDownload = async () => {
     const element = document.getElementById('plan-content') as HTMLElement;
-    if (element &amp;&amp; data) {
+    if (element && data) {
       const canvas = await html2canvas(element, { scale: 2 });
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
