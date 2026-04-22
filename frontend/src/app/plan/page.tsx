@@ -10,13 +10,15 @@ import { Nav } from '@/components/Nav';
 
 function PlanContent() {
   const searchParams = useSearchParams();
-  const lat = Number(searchParams.get('lat'));
-  const lng = Number(searchParams.get('lng'));
+  const latStr = searchParams.get('lat');
+  const lngStr = searchParams.get('lng');
+  const lat = latStr ? Number(latStr) : NaN;
+  const lng = lngStr ? Number(lngStr) : NaN;
   const [data, setData] = useState<PredictResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (lat &amp;&amp; lng &amp;&amp; !isNaN(lat) &amp;&amp; !isNaN(lng)) {
+    if (!isNaN(lat) && !isNaN(lng)) {
       predict(lat, lng).then(setData).finally(() => setLoading(false));
     } else {
       setLoading(false);
@@ -45,12 +47,12 @@ function PlanContent() {
         heightLeft -= pageHeight;
       }
 
-      pdf.save(`venture-plan-${data.location.neighborhood}.pdf`);
+      pdf.save(`venture-plan-${data.location.neighborhood || 'kampala'}.pdf`);
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center h-64">Loading plan...</div>;
-  if (!data) return <div className="flex items-center justify-center h-64 text-[var(--ink-muted)]">No location data. Visit from explore.</div>;
+  if (loading) return <div className="flex items-center justify-center h-64 text-[var(--ink)]">Analyzing location...</div>;
+  if (!data) return <div className="flex items-center justify-center h-64 text-[var(--ink-muted)]">No location selected. <a href="/explore" className="text-[var(--accent)] underline">Go to explore</a>.</div>;
 
   const top = data.recommendations[0];
 
@@ -60,61 +62,80 @@ function PlanContent() {
         onClick={handleDownload} 
         className="mb-8 bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--accent)] px-6 py-2 rounded-lg font-medium mx-auto block"
       >
-        Download PDF Guide
+        ⬇️ Download PDF Guide
       </button>
-      <div id="plan-content" className="space-y-8 print:space-y-6 max-w-4xl mx-auto p-4 print:p-0">
-        <h1 className="text-4xl font-bold print:text-3xl">Business Plan: {top.category}</h1>
-        <p className="text-xl text-[var(--ink-muted)]">
-          {data.location.neighborhood} ({data.location.lat.toFixed(4)}, {data.location.lng.toFixed(4)})
+      <div id="plan-content" className="space-y-8 print:space-y-6 max-w-4xl mx-auto p-4 print:p-0 print:bg-white">
+        <h1 className="text-4xl font-bold print:text-3xl">Venture Business Plan</h1>
+        <h2 className="text-3xl font-bold text-[var(--accent)]">{top.category}</h2>
+        <p className="text-xl text-[var(--ink-muted)] mb-8">
+          {data.location.neighborhood} • {data.location.lat.toFixed(4)}, {data.location.lng.toFixed(4)}
         </p>
         
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Market Analysis</h2>
-          <ul className="space-y-2 text-lg">
-            <li>• Schools: {data.anchors.schools} - Good for education-related businesses</li>
-            <li>• Taxi stages: {data.anchors.taxi_stages} - High foot traffic area</li>
-            <li>• Markets: {data.anchors.markets} - Existing trade ecosystem</li>
-            <li>• Population density: {data.anchors.population_density}%</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Financial Projections</h2>
-          <p className="text-2xl font-bold mb-2">
-            Daily Revenue: UGX {top.daily_revenue_ugx[0].toLocaleString()} - {top.daily_revenue_ugx[1].toLocaleString()}
-          </p>
-          <p>12-month Survival Probability: <span className="text-3xl font-bold text-green-600">{Math.round(top.survival_12mo * 100)}%</span></p>
-          <p>Viability Score: <span className="text-3xl font-bold">{Math.round(top.score * 100)}%</span></p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-6">Startup Checklist</h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <div><span className="font-bold">1.</span> URA business registration</div>
-              <div><span className="font-bold">2.</span> Secure location lease (UGX 500k-2M/mo)</div>
-              <div><span className="font-bold">3.</span> Initial inventory (UGX 5-20M)</div>
-              <div><span className="font-bold">4.</span> Trade license from KCCA</div>
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">📊 Market Analysis</h3>
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <p><span className="font-bold">Schools:</span> {data.anchors.schools}</p>
+              <p><span className="font-bold">Taxi stages:</span> {data.anchors.taxi_stages} (high foot traffic)</p>
+              <p><span className="font-bold">Markets:</span> {data.anchors.markets}</p>
             </div>
-            <div className="space-y-3">
-              <div><span className="font-bold">5.</span> Hire 1-3 staff</div>
-              <div><span className="font-bold">6.</span> Signage + WhatsApp Business</div>
-              <div><span className="font-bold">7.</span> Join local boda/sacco networks</div>
-              <div><span className="font-bold">8.</span> MTN MoMo till</div>
+            <div>
+              <p><span className="font-bold">Population density:</span> {data.anchors.population_density}%</p>
+              <p><span className="font-bold">Total competitors:</span> {Object.values(data.competitors).reduce((a,b)=>a+b,0)}</p>
             </div>
           </div>
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Risks &amp; Mitigation</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">💰 Financial Projections</h3>
+          <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-bold text-lg mb-2">Competition ({Object.values(data.competitors).reduce((a,b)=>a+b,0)} total)</h3>
-              <p>Differentiate with better service/location.</p>
+              <p className="text-3xl font-bold mb-2">
+                Daily: UGX {top.daily_revenue_ugx[0].toLocaleString()} - {top.daily_revenue_ugx[1].toLocaleString()}
+              </p>
+              <p className="text-2xl">Monthly: UGX {(top.daily_revenue_ugx[0]*30).toLocaleString()} - {(top.daily_revenue_ugx[1]*30).toLocaleString()}</p>
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-2">Economic volatility</h3>
-              <p>Keep costs low, multiple revenue streams.</p>
+              <p className="text-4xl font-bold text-green-600 mb-2">
+                {Math.round(top.survival_12mo * 100)}% survival
+              </p>
+              <p className="text-3xl font-bold">Score: {Math.round(top.score * 100)}%</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">🚀 Startup Checklist</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <div className="flex items-start gap-2"><span className="font-mono w-6">1.</span>URA TIN registration</div>
+              <div className="flex items-start gap-2"><span className="font-mono w-6">2.</span>KCCA trade license</div>
+              <div className="flex items-start gap-2"><span className="font-mono w-6">3.</span>Location lease (500k-2M UGX/mo)</div>
+              <div className="flex items-start gap-2"><span className="font-mono w-6">4.</span>Initial stock (5-20M UGX)</div>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-start gap-2"><span className="font-mono w-6">5.</span>1-3 staff hires</div>
+              <div className="flex items-start gap-2"><span className="font-mono w-6">6.</span>MTN MoMo till + signage</div>
+              <div className="flex items-start gap-2"><span className="font-mono w-6">7.</span>WhatsApp Business catalog</div>
+              <div className="flex items-start gap-2"><span className="font-mono w-6">8.</span>Local network (boda, market)</div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">⚠️ Risks &amp; Mitigation</h3>
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-bold">Competition ({Object.values(data.competitors).reduce((a,b)=>a+b,0)} businesses)</h4>
+              <p>Focus on superior service, niche positioning, morning peak hours.</p>
+            </div>
+            <div>
+              <h4 className="font-bold">Economic shocks</h4>
+              <p>Low overhead (family labor), multiple revenue (delivery, wholesale), cash reserves 3mo.</p>
+            </div>
+            <div>
+              <h4 className="font-bold">Regulatory</h4>
+              <p>All licenses current, join local SACCO for info/networking.</p>
             </div>
           </div>
         </section>
@@ -127,9 +148,11 @@ export default function PlanPage() {
   return (
     <div className="min-h-screen bg-[var(--bg)]">
       <Nav />
-      <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
-        <PlanContent />
-      </Suspense>
+      <main className="pt-20">
+        <Suspense fallback={<div className="flex items-center justify-center h-screen text-[var(--ink)]">Loading plan...</div>}>
+          <PlanContent />
+        </Suspense>
+      </main>
     </div>
   );
 }
