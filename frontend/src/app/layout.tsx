@@ -27,7 +27,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Venture — Know where to invest",
+  title: "Venture , Know where to invest",
   description:
     "AI-powered business intelligence for Ugandan entrepreneurs. Pick a location in Kampala and discover which business will thrive there.",
 };

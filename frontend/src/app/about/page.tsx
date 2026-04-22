@@ -28,7 +28,7 @@ const values = [
   {
     icon: MapPin,
     title: "Ground in reality",
-    body: "Every model output is traceable to real ground-truth data — not scraped listings or guessed proxies.",
+    body: "Every model output is traceable to real ground-truth data , not scraped listings or guessed proxies.",
   },
   {
     icon: Brain,
@@ -38,7 +38,7 @@ const values = [
   {
     icon: TrendingUp,
     title: "Honest forecasts",
-    body: "We show confidence intervals and survival odds as they are — not as founders want to hear them.",
+    body: "We show confidence intervals and survival odds as they are , not as founders want to hear them.",
   },
   {
     icon: Users,
@@ -108,7 +108,7 @@ export default function AboutPage() {
             className="max-w-2xl"
           >
             <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              — Our story
+              , Our story
             </div>
             <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
               Why location matters more in Kampala
@@ -131,7 +131,7 @@ export default function AboutPage() {
               </p>
               <p className="text-lg text-[var(--ink-muted)] leading-relaxed">
                 Yet most new business owners choose locations based on gut feel, word of mouth, 
-                or where they can afford rent — not where customers actually are.
+                or where they can afford rent , not where customers actually are.
               </p>
             </motion.div>
             <motion.div
@@ -164,7 +164,7 @@ export default function AboutPage() {
             className="max-w-2xl"
           >
             <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              — How we work
+              , How we work
             </div>
             <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
               Grounded in reality
@@ -201,7 +201,7 @@ export default function AboutPage() {
             className="max-w-2xl"
           >
             <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              — The team
+              , The team
             </div>
             <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
               Built by people who understand Kampala
@@ -244,7 +244,7 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              — Data & methodology
+              , Data & methodology
             </div>
             <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
               How the model works

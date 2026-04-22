@@ -20,7 +20,7 @@ export function Features() {
           className="max-w-2xl"
         >
           <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-            — Capabilities
+            : Capabilities
           </div>
           <h2 className="mt-4 font-serif text-5xl md:text-6xl leading-[1.05] tracking-tight">
             {t("feat.title")}
