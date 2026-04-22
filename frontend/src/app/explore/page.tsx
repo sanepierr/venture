@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { Nav } from "@/components/Nav";
 import { ResultsPanel } from "@/components/ResultsPanel";
@@ -11,15 +10,7 @@ import { useAuth } from "@/lib/auth";
 import { motion } from "framer-motion";
 import { Bookmark } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-
-const KampalaMap = dynamic(() => import("@/components/KampalaMap"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-full w-full flex items-center justify-center bg-[var(--surface)] text-sm text-[var(--ink-muted)] font-mono">
-      loading map…
-    </div>
-  ),
-});
+import dynamic from "next/dynamic";
 
 function ExploreContent() {
   const { t } = useI18n();
@@ -30,6 +21,15 @@ function ExploreContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+
+  const KampalaMap = dynamic(() => import("@/components/KampalaMap"), {
+    ssr: false,
+    loading: () => (
+      <div className="h-full w-full flex items-center justify-center bg-[var(--surface)] text-sm text-[var(--ink-muted)] font-mono">
+        {t("explore.loading_map")}
+      </div>
+    ),
+  });
 
   const onPick = useCallback(async (lat: number, lng: number) => {
     setPoint({ lat, lng });
@@ -105,7 +105,9 @@ function ExploreContent() {
             {/* Coords pill */}
             {point && (
               <div className="absolute bottom-6 left-6 z-[400] px-3 py-1.5 rounded-full bg-[var(--surface)]/90 backdrop-blur-md border border-[var(--border)] font-mono text-xs text-[var(--ink-muted)]">
-                {point.lat.toFixed(4)}°, {point.lng.toFixed(4)}°
+                {t("explore.coords")
+                  .replace("{lat}", point.lat.toFixed(4))
+                  .replace("{lng}", point.lng.toFixed(4))}
               </div>
             )}
           </div>
@@ -124,7 +126,7 @@ function ExploreContent() {
                   }`}
                 >
                   <Bookmark size={14} fill={saved ? "currentColor" : "none"} />
-                  {saved ? "Saved" : "Save location"}
+                  {saved ? t("explore.saved") : t("explore.save_location")}
                 </button>
               </div>
             )}
@@ -142,6 +144,7 @@ function ExploreContent() {
 }
 
 export default function ExplorePage() {
+  const { t } = useI18n();
   return (
     <Suspense
       fallback={
@@ -149,7 +152,7 @@ export default function ExplorePage() {
           <Nav />
           <div className="flex-1 pt-[68px] overflow-hidden">
             <div className="h-full w-full flex items-center justify-center bg-[var(--surface)] text-sm text-[var(--ink-muted)] font-mono">
-              Loading explore…
+              {t("explore.loading_explore")}
             </div>
           </div>
         </main>

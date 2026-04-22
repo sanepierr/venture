@@ -7,6 +7,7 @@ import { predict, PredictResponse } from '@/lib/api';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Nav } from '@/components/Nav';
+import { useI18n } from '@/lib/i18n';
 
 type SavedLocation = {
   id: string;
@@ -64,6 +65,7 @@ function defaultCustomization(): PlanCustomization {
 }
 
 function PlanContent() {
+  const { t } = useI18n();
   const searchParams = useSearchParams();
   const latStr = searchParams.get('lat');
   const lngStr = searchParams.get('lng');
@@ -159,16 +161,16 @@ function PlanContent() {
     }
   };
 
-  if (loading) return <div className="flex items-center justify-center h-64 text-[var(--ink)]">Analyzing location...</div>;
+  if (loading) return <div className="flex items-center justify-center h-64 text-[var(--ink)]">{t("plan.analyzing")}</div>;
   if (!data) {
     return (
       <div className="flex items-center justify-center h-64 text-[var(--ink-muted)] text-center px-6">
         <div>
-          <div>No location selected.</div>
+          <div>{t("plan.no_location")}</div>
           <div className="mt-2">
-            <a href="/explore" className="text-[var(--accent)] underline">Go to explore</a>
+            <a href="/explore" className="text-[var(--accent)] underline">{t("plan.go_explore")}</a>
             {savedLocations.length > 0 && (
-              <span className="text-[var(--ink-subtle)]"> or pick a saved location above.</span>
+              <span className="text-[var(--ink-subtle)]"> {t("plan.or_pick_saved")}</span>
             )}
           </div>
         </div>
@@ -183,7 +185,7 @@ function PlanContent() {
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row sm:items-end gap-4 mb-6" data-pdf-ignore="true">
           <div className="flex-1">
-            <div className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">Plan for</div>
+            <div className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">{t("plan.plan_for")}</div>
             <select
               value={selectedId ?? ""}
               onChange={(e) => setSelectedId(e.target.value || null)}
@@ -191,7 +193,7 @@ function PlanContent() {
               className="mt-2 w-full px-4 py-3 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--ink)] focus:outline-none focus:border-[var(--accent)] transition-colors disabled:opacity-60"
             >
               <option value="" disabled>
-                {savedLocations.length > 0 ? "Select a saved location" : "No saved locations yet"}
+                {savedLocations.length > 0 ? t("plan.select_saved") : t("plan.no_saved")}
               </option>
               {savedLocations.map((l) => (
                 <option key={l.id} value={l.id}>
@@ -201,7 +203,7 @@ function PlanContent() {
             </select>
             {(Number.isFinite(latFromQuery) && Number.isFinite(lngFromQuery)) && (
               <div className="mt-2 text-xs text-[var(--ink-subtle)]">
-                Showing plan for URL coordinates. Clear the query params to use saved locations.
+                {t("plan.url_override")}
               </div>
             )}
           </div>
@@ -209,7 +211,7 @@ function PlanContent() {
             onClick={handleDownload}
             className="bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--accent)] px-6 py-3 rounded-xl font-medium"
           >
-            ⬇️ Download PDF Guide
+            ⬇️ {t("plan.download")}
           </button>
         </div>
       </div>
@@ -220,9 +222,7 @@ function PlanContent() {
           </h1>
           <div className="grid md:grid-cols-3 gap-4" data-pdf-ignore="true">
             <div>
-              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">
-                Plan title
-              </label>
+              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">{t("plan.field.plan_title")}</label>
               <input
                 value={selectedCustomization.planTitle}
                 onChange={(e) => updateCustomization({ planTitle: e.target.value })}
@@ -232,9 +232,7 @@ function PlanContent() {
               />
             </div>
             <div>
-              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">
-                Owner name
-              </label>
+              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">{t("plan.field.owner_name")}</label>
               <input
                 value={selectedCustomization.ownerName}
                 onChange={(e) => updateCustomization({ ownerName: e.target.value })}
@@ -244,9 +242,7 @@ function PlanContent() {
               />
             </div>
             <div>
-              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">
-                Starting budget (UGX)
-              </label>
+              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">{t("plan.field.budget")}</label>
               <input
                 value={selectedCustomization.startingBudgetUgx}
                 onChange={(e) => updateCustomization({ startingBudgetUgx: e.target.value })}
@@ -274,37 +270,37 @@ function PlanContent() {
         </p>
 
         <section>
-          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">🎯 Goals &amp; Notes</h3>
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">🎯 {t("plan.section.goals_notes")}</h3>
           <div className="grid md:grid-cols-2 gap-6" data-pdf-ignore="true">
             <div>
-              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">Goals</label>
+              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">{t("plan.field.goals")}</label>
               <textarea
                 value={selectedCustomization.goals}
                 onChange={(e) => updateCustomization({ goals: e.target.value })}
                 disabled={!selectedId}
                 className="mt-2 w-full min-h-[120px] px-4 py-3 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--ink)] focus:outline-none focus:border-[var(--accent)] transition-colors disabled:opacity-60"
-                placeholder="What do you want to achieve in the first 90 days?"
+                placeholder={t("plan.field.goals_ph")}
               />
             </div>
             <div>
-              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">Notes</label>
+              <label className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">{t("plan.field.notes")}</label>
               <textarea
                 value={selectedCustomization.notes}
                 onChange={(e) => updateCustomization({ notes: e.target.value })}
                 disabled={!selectedId}
                 className="mt-2 w-full min-h-[120px] px-4 py-3 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--ink)] focus:outline-none focus:border-[var(--accent)] transition-colors disabled:opacity-60"
-                placeholder="Add assumptions, suppliers, pricing ideas, etc."
+                placeholder={t("plan.field.notes_ph")}
               />
             </div>
           </div>
           {(selectedCustomization.goals || selectedCustomization.notes) && (
             <div className="grid md:grid-cols-2 gap-6 text-sm">
               <div>
-                <div className="font-semibold">Goals</div>
+                <div className="font-semibold">{t("plan.field.goals")}</div>
                 <div className="mt-1 whitespace-pre-wrap text-[var(--ink-muted)]">{selectedCustomization.goals || "—"}</div>
               </div>
               <div>
-                <div className="font-semibold">Notes</div>
+                <div className="font-semibold">{t("plan.field.notes")}</div>
                 <div className="mt-1 whitespace-pre-wrap text-[var(--ink-muted)]">{selectedCustomization.notes || "—"}</div>
               </div>
             </div>
@@ -312,7 +308,7 @@ function PlanContent() {
         </section>
         
         <section>
-          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">📊 Market Analysis</h3>
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">📊 {t("plan.section.market")}</h3>
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div>
               <p><span className="font-bold">Schools:</span> {data.anchors.schools}</p>
@@ -327,7 +323,7 @@ function PlanContent() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">💰 Financial Projections</h3>
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">💰 {t("plan.section.financial")}</h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <p className="text-3xl font-bold mb-2">
@@ -345,7 +341,7 @@ function PlanContent() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">🚀 Startup Checklist</h3>
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">🚀 {t("plan.section.checklist")}</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <div className="flex items-start gap-2"><span className="font-mono w-6">1.</span>URA TIN registration</div>
@@ -363,7 +359,7 @@ function PlanContent() {
         </section>
 
         <section>
-          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">⚠️ Risks &amp; Mitigation</h3>
+          <h3 className="text-2xl font-semibold mb-6 border-b pb-2 border-[var(--border)]">⚠️ {t("plan.section.risks")}</h3>
           <div className="space-y-4">
             <div>
               <h4 className="font-bold">Competition ({Object.values(data.competitors).reduce((a,b)=>a+b,0)} businesses)</h4>

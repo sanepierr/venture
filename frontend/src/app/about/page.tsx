@@ -4,43 +4,8 @@ import { useI18n } from "@/lib/i18n";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
-import { MapPin, Brain, TrendingUp, Users, BookOpen } from "lucide-react";
-
-const team = [
-  {
-    name: "Geno Owor Joshua",
-    role: "Lead Developer",
-    bio: "Full-stack developer specializing in AI-powered web applications and data visualization.",
-  },
-  {
-    name: "Mokili Promise Pierre",
-    role: "Lead Developer",
-    bio: "Backend engineer with expertise in machine learning models and API development.",
-  },
-];
-
-const values = [
-  {
-    icon: MapPin,
-    title: "Ground in reality",
-    body: "Every model output is traceable to real ground-truth data , not scraped listings or guessed proxies.",
-  },
-  {
-    icon: Brain,
-    title: "Explainable decisions",
-    body: "When we say a location scores 94 for Mobile Money, we show you why: schools, stages, markets, competitors.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Honest forecasts",
-    body: "We show confidence intervals and survival odds as they are , not as founders want to hear them.",
-  },
-  {
-    icon: Users,
-    title: "Built with, not for",
-    body: "The business taxonomy and survival benchmarks come from interviews with 200+ Kampala entrepreneurs.",
-  },
-];
+import Link from "next/link";
+import { Brain, Globe, MessageCircle, Users, Layers, ArrowUpRight } from "lucide-react";
 
 export default function AboutPage() {
   const { t } = useI18n();
@@ -50,7 +15,7 @@ export default function AboutPage() {
       <Nav />
 
       <div className="pt-32 pb-24 px-6">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -58,92 +23,90 @@ export default function AboutPage() {
             className="text-center"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--surface)]/60 backdrop-blur-sm text-xs font-mono uppercase tracking-widest text-[var(--ink-muted)]">
-              {t("nav.about")}
+              {t("about.badge")}
             </div>
-            <h1 className="mt-8 font-serif text-6xl md:text-7xl leading-[1] tracking-tight">
-              Built in Kampala.<br />
-              <span className="italic text-[var(--accent)]">For Kampala.</span>
+            <h1 className="mt-8 font-serif text-5xl md:text-6xl leading-[1.05] tracking-tight">
+              {t("about.title")}
             </h1>
-            <p className="mt-8 text-xl text-[var(--ink-muted)] max-w-2xl mx-auto leading-relaxed">
-              Venture started from a simple frustration: every year, thousands of Ugandan entrepreneurs 
-              pick the wrong location and lose everything. We&apos;re building the intelligence layer they deserve.
-            </p>
+            <div className="mt-3 text-xl text-[var(--accent)] font-serif">
+              {t("about.subtitle")}
+            </div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-20 grid md:grid-cols-4 gap-4"
+            className="mt-14 grid md:grid-cols-3 gap-4"
           >
-            {[
-              { v: "5,000+", l: "Ground-truth data points" },
-              { v: "24", l: "Business categories" },
-              { v: "200+", l: "Entrepreneur interviews" },
-              { v: "100%", l: "Kampala coverage" },
-            ].map((s) => (
-              <div key={s.l} className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)] text-center">
-                <div className="font-serif text-4xl text-[var(--accent)]">{s.v}</div>
-                <div className="mt-2 text-xs font-mono uppercase tracking-widest text-[var(--ink-muted)]">
-                  {s.l}
+            <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)]">
+                  <Brain size={18} />
                 </div>
+                <div className="font-serif text-2xl">AI</div>
               </div>
-            ))}
+              <div className="mt-3 text-sm text-[var(--ink-muted)] leading-relaxed">
+                {t("about.solution.body")}
+              </div>
+            </div>
+            <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)]">
+                  <MessageCircle size={18} />
+                </div>
+                <div className="font-serif text-2xl">Chatbot</div>
+              </div>
+              <div className="mt-3 text-sm text-[var(--ink-muted)] leading-relaxed">
+                {t("about.how.3")}
+              </div>
+            </div>
+            <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)]">
+                  <Globe size={18} />
+                </div>
+                <div className="font-serif text-2xl">Luganda</div>
+              </div>
+              <div className="mt-3 text-sm text-[var(--ink-muted)] leading-relaxed">
+                {t("about.how.4")}
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
 
       <section className="py-24 px-6 bg-[var(--surface)] border-y border-[var(--border)]">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-2xl"
-          >
-            <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              , Our story
-            </div>
-            <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
-              Why location matters more in Kampala
-            </h2>
-          </motion.div>
-
-          <div className="mt-16 grid md:grid-cols-2 gap-12">
+        <div className="mx-auto max-w-5xl">
+          <div className="grid lg:grid-cols-2 gap-10">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="space-y-6"
+              className="p-8 rounded-3xl bg-[var(--bg)] border border-[var(--border)]"
             >
-              <p className="text-lg text-[var(--ink-muted)] leading-relaxed">
-                In Kampala&apos;s informal economy, a single street corner can mean the difference between 
-                thriving and closing. A chapati stand 50 meters from a taxi stage earns differently 
-                than one near a school. A pharmacy near a market performs differently than one 
-                near office blocks.
-              </p>
-              <p className="text-lg text-[var(--ink-muted)] leading-relaxed">
-                Yet most new business owners choose locations based on gut feel, word of mouth, 
-                or where they can afford rent , not where customers actually are.
+              <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
+                {t("about.problem.title")}
+              </div>
+              <div className="mt-4 font-serif text-3xl">{t("about.problem.title")}</div>
+              <p className="mt-4 text-[var(--ink-muted)] leading-relaxed">
+                {t("about.problem.body")}
               </p>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="space-y-6"
+              transition={{ duration: 0.7, delay: 0.05 }}
+              className="p-8 rounded-3xl bg-[var(--bg)] border border-[var(--border)]"
             >
-              <p className="text-lg text-[var(--ink-muted)] leading-relaxed">
-                Venture solves this by analyzing every location through a gradient-boosted model 
-                trained on 5,000+ ground-truth observations: what businesses exist, how much 
-                they earn, and whether they survived their first year.
-              </p>
-              <p className="text-lg text-[var(--ink-muted)] leading-relaxed">
-                The result: ranked recommendations with revenue forecasts and survival probabilities, 
-                all grounded in Kampala&apos;s specific patterns.
+              <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
+                {t("about.solution.title")}
+              </div>
+              <div className="mt-4 font-serif text-3xl">{t("about.solution.title")}</div>
+              <p className="mt-4 text-[var(--ink-muted)] leading-relaxed">
+                {t("about.solution.body")}
               </p>
             </motion.div>
           </div>
@@ -151,7 +114,7 @@ export default function AboutPage() {
       </section>
 
       <section className="py-24 px-6">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -159,28 +122,32 @@ export default function AboutPage() {
             className="max-w-2xl"
           >
             <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              , How we work
+              {t("about.how.title")}
             </div>
             <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
-              Grounded in reality
+              {t("about.how.title")}
             </h2>
           </motion.div>
 
-          <div className="mt-16 grid md:grid-cols-2 gap-4">
-            {values.map((val, i) => (
+          <div className="mt-12 grid md:grid-cols-2 gap-4">
+            {[
+              { icon: Globe, body: t("about.how.1") },
+              { icon: MessageCircle, body: t("about.how.2") },
+              { icon: Brain, body: t("about.how.3") },
+              { icon: Layers, body: t("about.how.4") },
+            ].map((item, i) => (
               <motion.div
-                key={val.title}
-                initial={{ opacity: 0, y: 30 }}
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: i * 0.1 }}
-                className="p-8 rounded-3xl bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--accent)] transition-all"
+                transition={{ duration: 0.6, delay: i * 0.05 }}
+                className="flex gap-4 p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)]"
               >
-                <div className="w-12 h-12 rounded-2xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)]">
-                  <val.icon size={20} />
+                <div className="w-10 h-10 rounded-xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)] shrink-0">
+                  <item.icon size={18} />
                 </div>
-                <h3 className="mt-6 font-serif text-2xl">{val.title}</h3>
-                <p className="mt-3 text-[var(--ink-muted)] leading-relaxed">{val.body}</p>
+                <div className="text-[var(--ink-muted)] leading-relaxed">{item.body}</div>
               </motion.div>
             ))}
           </div>
@@ -188,99 +155,59 @@ export default function AboutPage() {
       </section>
 
       <section className="py-24 px-6 bg-[var(--surface)] border-y border-[var(--border)]">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-2xl"
-          >
-            <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              — The developers
-            </div>
-            <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
-              Built by the team behind Venture
-            </h2>
-          </motion.div>
-
-          <div className="mt-16 grid md:grid-cols-2 gap-6">
-            {team.map((member, i) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: i * 0.1 }}
-                className="p-6 rounded-2xl bg-[var(--bg)] border border-[var(--border)]"
-              >
-                <div className="w-16 h-16 rounded-full bg-[var(--accent)]/20 flex items-center justify-center mb-4">
-                  <span className="font-serif text-2xl text-[var(--accent)]">
-                    {member.name.split(" ").map(n => n[0]).join("")}
-                  </span>
-                </div>
-                <h3 className="font-serif text-xl">{member.name}</h3>
-                <div className="mt-1 text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-                  {member.role}
-                </div>
-                <p className="mt-4 text-sm text-[var(--ink-muted)] leading-relaxed">
-                  {member.bio}
-                </p>
-              </motion.div>
+        <div className="mx-auto max-w-5xl">
+          <div className="grid lg:grid-cols-3 gap-4">
+            {[
+              { title: t("about.impact.title"), body: t("about.impact.body") },
+              { title: t("about.scale.title"), body: t("about.scale.body") },
+              { title: t("about.stack.title"), body: t("about.stack.body") },
+            ].map((card) => (
+              <div key={card.title} className="p-7 rounded-3xl bg-[var(--bg)] border border-[var(--border)]">
+                <div className="font-serif text-2xl">{card.title}</div>
+                <p className="mt-3 text-[var(--ink-muted)] leading-relaxed">{card.body}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       <section className="py-24 px-6">
-        <div className="mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
-              , Data & methodology
+        <div className="mx-auto max-w-5xl">
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
+            <div>
+              <div className="text-xs font-mono uppercase tracking-widest text-[var(--accent)]">
+                {t("about.team.title")}
+              </div>
+              <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
+                {t("about.team.title")}
+              </h2>
+              <div className="mt-8 space-y-3 text-lg text-[var(--ink)]">
+                <div className="flex items-center gap-3">
+                  <Users size={18} className="text-[var(--accent)]" />
+                  <span>{t("about.team.1")}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Users size={18} className="text-[var(--accent)]" />
+                  <span>{t("about.team.2")}</span>
+                </div>
+              </div>
             </div>
-            <h2 className="mt-4 font-serif text-5xl leading-tight tracking-tight">
-              How the model works
-            </h2>
-          </motion.div>
 
-          <div className="mt-12 space-y-6 text-left">
-            {[
-              {
-                icon: BookOpen,
-                title: "Training data",
-                body: "5,000+ data points collected through field surveys, business registrations, and follow-up interviews. Each point records: location, business type, daily revenue, monthly rent, survival status at 6 and 12 months.",
-              },
-              {
-                icon: MapPin,
-                title: "Location features",
-                body: "We compute 40+ features per location: distance to nearest schools, taxi stages, markets; population density estimates; count of same-business competitors within 200m radius; road network proximity.",
-              },
-              {
-                icon: Brain,
-                title: "Model architecture",
-                body: "Gradient-boosted trees (XGBoost) with separate heads for revenue prediction and survival classification. Trained on 80% of data, validated on held-out 20% across multiple Kampala neighborhoods.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="flex gap-6 p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)]"
+            <div className="p-8 rounded-3xl bg-[var(--surface)] border border-[var(--border)]">
+              <div className="text-xs font-mono uppercase tracking-widest text-[var(--ink-subtle)]">
+                {t("about.prototype")}
+              </div>
+              <Link
+                href="https://venture-steel.vercel.app/"
+                target="_blank"
+                className="mt-3 inline-flex items-center gap-2 text-[var(--accent)] hover:underline break-all"
               >
-                <div className="w-10 h-10 rounded-xl bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center text-[var(--accent)] shrink-0">
-                  <item.icon size={18} />
-                </div>
-                <div>
-                  <h3 className="font-serif text-xl">{item.title}</h3>
-                  <p className="mt-2 text-[var(--ink-muted)] leading-relaxed">{item.body}</p>
-                </div>
-              </motion.div>
-            ))}
+                venture-steel.vercel.app <ArrowUpRight size={14} />
+              </Link>
+              <div className="mt-6 text-xs text-[var(--ink-subtle)] leading-relaxed">
+                {t("about.badge")}
+              </div>
+            </div>
           </div>
         </div>
       </section>
