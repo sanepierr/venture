@@ -6,7 +6,7 @@ import { predict, PredictResponse } from '@/lib/api';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Nav } from '@/components/Nav';
-import { Button } from '@/components/ui/button'; // Assume or create
+// No Button component needed - use native button
 
 export default function PlanPage() {
   const searchParams = useSearchParams();
@@ -55,7 +55,7 @@ export default function PlanPage() {
     <div className="min-h-screen bg-background">
       <Nav />
       <div className="max-w-4xl mx-auto p-8">
-        <button onClick={handleDownload} className="mb-8 bg-primary text-primary-foreground px-6 py-2 rounded-lg">
+        <button onClick={handleDownload} className="mb-8 bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--accent)] px-6 py-2 rounded-lg font-medium">
           Download PDF Guide
         </button>
         <div id="plan-content" className="space-y-8">

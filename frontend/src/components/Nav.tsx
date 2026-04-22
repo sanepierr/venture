@@ -49,13 +49,16 @@ export function Nav() {
             {t("nav.explore")}
           </Link>
           {user && (
-            <Link href="/dashboard" className="hover:text-[var(--ink)] transition-colors text-[var(--accent)]">
-              Dashboard
-            </Link>
-            <Link href="/plan" className="hover:text-[var(--ink)] transition-colors">
-              Plan
-            </Link>
+            <>
+              <Link href="/dashboard" className="hover:text-[var(--ink)] transition-colors text-[var(--accent)]">
+                Dashboard
+              </Link>
+              <Link href="/plan" className="hover:text-[var(--ink)] transition-colors">
+                Plan
+              </Link>
+            </>
           )}
+
 
         </nav>
 
