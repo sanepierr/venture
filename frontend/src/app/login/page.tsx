@@ -7,10 +7,12 @@ import { motion } from "framer-motion";
 import { LogIn, Mail, Lock, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Logo } from "@/components/Logo";
+import { useI18n } from "@/lib/i18n";
 
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -35,7 +37,7 @@ export default function LoginPage() {
       <div className="p-6">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-[var(--ink-muted)] hover:text-[var(--ink)] transition-colors">
           <ArrowLeft size={16} />
-          Back to home
+          {t("common.back_home")}
         </Link>
       </div>
 
@@ -49,8 +51,8 @@ export default function LoginPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--accent)]/10 mb-4">
               <LogIn size={24} className="text-[var(--accent)]" />
             </div>
-            <h1 className="font-serif text-4xl tracking-tight">Welcome back</h1>
-            <p className="mt-2 text-[var(--ink-muted)]">Sign in to your account</p>
+            <h1 className="font-serif text-4xl tracking-tight">{t("auth.login.title")}</h1>
+            <p className="mt-2 text-[var(--ink-muted)]">{t("auth.login.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -61,7 +63,7 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-[var(--ink)]">Email</label>
+              <label className="text-sm font-medium text-[var(--ink)]">{t("auth.login.email")}</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--ink-muted)]" />
                 <input
@@ -70,13 +72,13 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  placeholder="you@example.com"
+                  placeholder={t("auth.login.email_ph")}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-[var(--ink)]">Password</label>
+              <label className="text-sm font-medium text-[var(--ink)]">{t("auth.login.password")}</label>
               <div className="relative">
                 <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--ink-muted)]" />
                 <input
@@ -85,7 +87,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  placeholder="Enter your password"
+                  placeholder={t("auth.login.password_ph")}
                 />
               </div>
             </div>
@@ -95,14 +97,14 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-3 px-6 rounded-xl bg-[var(--ink)] text-[var(--bg)] font-medium hover:bg-[var(--accent)] transition-colors disabled:opacity-50"
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? t("auth.login.submitting") : t("auth.login.submit")}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-[var(--ink-muted)]">
-            Don&apos;t have an account?{" "}
+            {t("auth.login.no_account")}{" "}
             <Link href="/signup" className="text-[var(--accent)] hover:underline">
-              Create one
+              {t("auth.login.create_one")}
             </Link>
           </p>
         </motion.div>

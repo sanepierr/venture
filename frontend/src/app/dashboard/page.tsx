@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/lib/auth";
+import { useI18n } from "@/lib/i18n";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { MapPin, TrendingUp, Star, LogOut, ArrowRight, User, BarChart3 } from "lucide-react";
@@ -19,6 +20,7 @@ interface SavedLocation {
 
 export default function DashboardPage() {
   const { user, logout } = useAuth();
+  const { t } = useI18n();
   const router = useRouter();
   const [savedLocations, setSavedLocations] = useState<SavedLocation[]>([]);
 
@@ -58,7 +60,7 @@ export default function DashboardPage() {
               className="hidden sm:flex items-center gap-2 text-sm text-[var(--ink-muted)] hover:text-[var(--ink)] transition-colors"
             >
               <MapPin size={16} />
-              Explore
+              {t("dash.explore")}
             </Link>
             <div className="h-4 w-px bg-[var(--border)]" />
             <div className="flex items-center gap-3">
@@ -73,7 +75,7 @@ export default function DashboardPage() {
             <button
               onClick={handleLogout}
               className="p-2 rounded-full border border-[var(--border)] text-[var(--ink-muted)] hover:text-[var(--ink)] hover:border-[var(--ink)] transition-colors"
-              title="Sign out"
+              title={t("common.sign_out")}
             >
               <LogOut size={16} />
             </button>
@@ -91,10 +93,10 @@ export default function DashboardPage() {
             className="mb-8"
           >
             <h1 className="font-serif text-4xl md:text-5xl tracking-tight">
-              Your Dashboard
+              {t("dash.title")}
             </h1>
             <p className="mt-2 text-[var(--ink-muted)]">
-              Welcome back, {user.name.split(" ")[0]}. Track your saved investment opportunities.
+              {t("dash.welcome").replace("{name}", user.name.split(" ")[0])}
             </p>
           </motion.div>
 
@@ -113,7 +115,7 @@ export default function DashboardPage() {
                 <div>
                   <div className="font-mono text-2xl">{savedLocations.length}</div>
                   <div className="text-xs font-mono uppercase tracking-widest text-[var(--ink-muted)]">
-                    Saved locations
+                    {t("dash.saved_locations")}
                   </div>
                 </div>
               </div>
@@ -121,7 +123,7 @@ export default function DashboardPage() {
                 href="/explore"
                 className="inline-flex items-center gap-2 text-sm text-[var(--accent)] hover:underline"
               >
-                Explore new <ArrowRight size={14} />
+                {t("dash.explore_new")} <ArrowRight size={14} />
               </Link>
             </motion.div>
 
@@ -142,12 +144,12 @@ export default function DashboardPage() {
                       : 0}
                   </div>
                   <div className="text-xs font-mono uppercase tracking-widest text-[var(--ink-muted)]">
-                    Avg. score
+                    {t("dash.avg_score")}
                   </div>
                 </div>
               </div>
               <div className="text-sm text-[var(--ink-muted)]">
-                Based on your saved locations
+                {t("dash.avg_score_sub")}
               </div>
             </motion.div>
 
@@ -166,12 +168,12 @@ export default function DashboardPage() {
                     {savedLocations.filter((l) => l.score >= 80).length}
                   </div>
                   <div className="text-xs font-mono uppercase tracking-widest text-[var(--ink-muted)]">
-                    High-potential
+                    {t("dash.high_potential")}
                   </div>
                 </div>
               </div>
               <div className="text-sm text-[var(--ink-muted)]">
-                Score 80 or above
+                {t("dash.high_potential_sub")}
               </div>
             </motion.div>
           </div>
@@ -183,13 +185,13 @@ export default function DashboardPage() {
             transition={{ delay: 0.25 }}
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-serif text-2xl">Saved Locations</h2>
+              <h2 className="font-serif text-2xl">{t("dash.saved_locations_title")}</h2>
               <Link
                 href="/explore"
                 className="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-full bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--accent)] transition-colors"
               >
                 <MapPin size={14} />
-                Explore
+                {t("dash.explore")}
               </Link>
             </div>
 
@@ -198,15 +200,15 @@ export default function DashboardPage() {
                 <div className="w-14 h-14 rounded-full bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center mx-auto mb-4">
                   <MapPin size={22} className="text-[var(--ink-muted)]" />
                 </div>
-                <h3 className="font-serif text-xl">No saved locations yet</h3>
+                <h3 className="font-serif text-xl">{t("dash.no_saved_title")}</h3>
                 <p className="mt-2 text-[var(--ink-muted)] text-sm">
-                  Explore Kampala and save locations to track your investments
+                  {t("dash.no_saved_sub")}
                 </p>
                 <Link
                   href="/explore"
                   className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-full bg-[var(--ink)] text-[var(--bg)] hover:bg-[var(--accent)] transition-colors"
                 >
-                  Start exploring <ArrowRight size={14} />
+                  {t("dash.start_exploring")} <ArrowRight size={14} />
                 </Link>
               </div>
             ) : (
@@ -229,14 +231,14 @@ export default function DashboardPage() {
                       <div className="text-right">
                         <div className="font-mono text-2xl text-[var(--accent)]">{loc.score}</div>
                         <div className="text-[10px] font-mono uppercase tracking-widest text-[var(--ink-subtle)]">
-                          score
+                          {t("dash.score")}
                         </div>
                       </div>
                     </div>
                     <div className="pt-3 border-t border-[var(--border)] flex items-center justify-between">
                       <div>
                         <div className="text-[10px] font-mono uppercase tracking-widest text-[var(--ink-subtle)]">
-                          Top pick
+                          {t("dash.top_pick")}
                         </div>
                         <div className="font-medium text-sm mt-0.5">{loc.topBusiness}</div>
                       </div>

@@ -7,10 +7,12 @@ import { motion } from "framer-motion";
 import { UserPlus, Mail, Lock, User, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Logo } from "@/components/Logo";
+import { useI18n } from "@/lib/i18n";
 
 export default function SignupPage() {
   const router = useRouter();
   const { signup } = useAuth();
+  const { t } = useI18n();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +38,7 @@ export default function SignupPage() {
       <div className="p-6">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-[var(--ink-muted)] hover:text-[var(--ink)] transition-colors">
           <ArrowLeft size={16} />
-          Back to home
+          {t("common.back_home")}
         </Link>
       </div>
 
@@ -50,8 +52,8 @@ export default function SignupPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--accent)]/10 mb-4">
               <UserPlus size={24} className="text-[var(--accent)]" />
             </div>
-            <h1 className="font-serif text-4xl tracking-tight">Create account</h1>
-            <p className="mt-2 text-[var(--ink-muted)]">Start making better investment decisions</p>
+            <h1 className="font-serif text-4xl tracking-tight">{t("auth.signup.title")}</h1>
+            <p className="mt-2 text-[var(--ink-muted)]">{t("auth.signup.subtitle")}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -62,7 +64,7 @@ export default function SignupPage() {
             )}
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-[var(--ink)]">Full name</label>
+              <label className="text-sm font-medium text-[var(--ink)]">{t("auth.signup.name")}</label>
               <div className="relative">
                 <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--ink-muted)]" />
                 <input
@@ -71,13 +73,13 @@ export default function SignupPage() {
                   onChange={(e) => setName(e.target.value)}
                   required
                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  placeholder="John Doe"
+                  placeholder={t("auth.signup.name_ph")}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-[var(--ink)]">Email</label>
+              <label className="text-sm font-medium text-[var(--ink)]">{t("auth.signup.email")}</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--ink-muted)]" />
                 <input
@@ -86,13 +88,13 @@ export default function SignupPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  placeholder="you@example.com"
+                  placeholder={t("auth.login.email_ph")}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-[var(--ink)]">Password</label>
+              <label className="text-sm font-medium text-[var(--ink)]">{t("auth.signup.password")}</label>
               <div className="relative">
                 <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--ink-muted)]" />
                 <input
@@ -102,7 +104,7 @@ export default function SignupPage() {
                   required
                   minLength={6}
                   className="w-full pl-11 pr-4 py-3 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[var(--ink)] placeholder:text-[var(--ink-subtle)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                  placeholder="At least 6 characters"
+                  placeholder={t("auth.signup.password_ph")}
                 />
               </div>
             </div>
@@ -112,14 +114,14 @@ export default function SignupPage() {
               disabled={loading}
               className="w-full py-3 px-6 rounded-xl bg-[var(--ink)] text-[var(--bg)] font-medium hover:bg-[var(--accent)] transition-colors disabled:opacity-50"
             >
-              {loading ? "Creating account..." : "Create account"}
+              {loading ? t("auth.signup.submitting") : t("auth.signup.submit")}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-[var(--ink-muted)]">
-            Already have an account?{" "}
+            {t("auth.signup.have_account")}{" "}
             <Link href="/login" className="text-[var(--accent)] hover:underline">
-              Sign in
+              {t("auth.signup.sign_in")}
             </Link>
           </p>
         </motion.div>
