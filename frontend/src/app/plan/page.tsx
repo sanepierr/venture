@@ -1,11 +1,15 @@
 "use client";
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { predict, PredictResponse } from '@/lib/api';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Nav } from '@/components/Nav';
+
+function PlanContent() {
+
 // No Button component needed - use native button
 
 export default function PlanPage() {
