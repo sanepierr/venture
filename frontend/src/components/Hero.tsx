@@ -81,11 +81,19 @@ export function Hero() {
 
           <h1 className="mt-8 font-serif text-[13vw] sm:text-[10vw] lg:text-[8.5vw] xl:text-[130px] leading-[0.95] tracking-[-0.03em]">
             <span className="reveal-line">
-              {line1.join(" ")}
+              {line1.map((w, i) => (
+                <span key={i} className="reveal-word">
+                  {w}
+                </span>
+              ))}
+              {" "}
             </span>
-            {" "}
             <span className="reveal-line italic text-[var(--accent)]">
-              {line2.join(" ")}
+              {line2.map((w, i) => (
+                <span key={i} className="reveal-word">
+                  {w}
+                </span>
+              ))}
             </span>
           </h1>
 
