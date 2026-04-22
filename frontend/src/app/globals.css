@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono: var(--font-geist-mono);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+}
+
+:root,
+[data-theme="light"] {
+  --bg: #F5F1EB;
+  --surface: #FFFBF5;
+  --surface-raised: #FFFFFF;
+  --ink: #1A1A1A;
+  --ink-muted: #5C5A54;
+  --ink-subtle: #8A8780;
+  --accent: #D97757;
+  --accent-hover: #C56545;
+  --success: #4A7C59;
+  --border: #E5DED1;
+  --border-strong: #C9C0AE;
+  --grid: rgba(26, 26, 26, 0.04);
+}
+
+[data-theme="dark"] {
+  --bg: #1A1815;
+  --surface: #242019;
+  --surface-raised: #2D2822;
+  --ink: #F5F1EB;
+  --ink-muted: #A8A198;
+  --ink-subtle: #6E685E;
+  --accent: #E88968;
+  --accent-hover: #F0A088;
+  --success: #7BAE8A;
+  --border: #3A342C;
+  --border-strong: #4F4839;
+  --grid: rgba(245, 241, 235, 0.04);
+}
+
+* { border-color: var(--border); }
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #FFFBF5; }
+
+.font-serif { font-family: var(--font-serif), ui-serif, Georgia, serif; }
+
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+[data-theme="dark"] .grain::before { mix-blend-mode: screen; opacity: 0.25; }
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(40px, -30px) scale(1.05); }
+  66% { transform: translate(-30px, 20px) scale(0.98); }
+}
+.orb { animation: float-slow 18s ease-in-out infinite; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee 40s linear infinite; }
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.pulse-ring { animation: pulse-ring 2.4s ease-out infinite; }
+
+.bg-grid {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+[data-theme="dark"] .leaflet-tile { filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.95); }
+.leaflet-container { background: var(--surface) !important; font-family: var(--font-sans); }
+
+.reveal-line { overflow: hidden; display: block; }
+.reveal-word { display: inline-block; will-change: transform; }
+
+button, a { cursor: pointer; }
