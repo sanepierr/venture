@@ -98,9 +98,9 @@ export default function ExplorePage() {
         </div>
 
         {/* Panel */}
-        <aside className="row-start-2 lg:row-start-1 bg-[var(--surface)] border-l border-[var(--border)] lg:min-h-0 min-h-[50vh] overflow-hidden">
+        <aside className="row-start-2 lg:row-start-1 bg-[var(--surface)] border-l border-[var(--border)] h-full overflow-hidden flex flex-col">
           {data && user && (
-            <div className="px-7 py-4 border-b border-[var(--border)] flex justify-end">
+            <div className="px-7 py-4 border-b border-[var(--border)] flex justify-end shrink-0">
               <button
                 onClick={saveLocation}
                 disabled={saved}
@@ -115,13 +115,15 @@ export default function ExplorePage() {
               </button>
             </div>
           )}
-          <ResultsPanel data={data} loading={loading} error={error} />
+          <div className="flex-1 overflow-hidden">
+            <ResultsPanel data={data} loading={loading} error={error} />
+          </div>
           {data && <Chatbot data={data} />}
         </aside>
+
       </div>
     </main>
   );
 }
 
-import { Chatbot } from "@/components/Chatbot";
 
