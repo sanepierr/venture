@@ -52,7 +52,11 @@ export function Nav() {
             <Link href="/dashboard" className="hover:text-[var(--ink)] transition-colors text-[var(--accent)]">
               Dashboard
             </Link>
+            <Link href="/plan" className="hover:text-[var(--ink)] transition-colors">
+              Plan
+            </Link>
           )}
+
         </nav>
 
         <div className="flex items-center gap-2">
