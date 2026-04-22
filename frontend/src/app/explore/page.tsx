@@ -129,7 +129,9 @@ function ExploreContent() {
               </div>
             )}
             <div className="flex-1 overflow-auto">
-              <ResultsPanel data={data} loading={loading} error={error} />
+              <div className="h-full" data-lenis-prevent>
+                <ResultsPanel data={data} loading={loading} error={error} />
+              </div>
             </div>
             {data && <Chatbot data={data} />}
           </aside>
