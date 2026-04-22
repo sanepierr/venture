@@ -213,10 +213,24 @@ export function ResultsPanel({
             ))}
           </div>
         </div>
+
+        {/* Analysis Notes */}
+        <div className="mt-8 pt-6 border-t border-[var(--border)]">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--ink-subtle)] mb-4">
+            Area Insights
+          </div>
+          <ul className="space-y-2 text-sm text-[var(--ink)]">
+            <li>• {data.anchors.schools >= 3 ? "High school density supports education-adjacent businesses (stationery, chapati, internet cafe)." : "Few schools; focus on general retail/food."}</li>
+            <li>• {data.anchors.taxi_stages >= 2 ? "Strong taxi commuter traffic favors quick-service (mobile money, tea kiosk, phone repair)." : "Lower mobility; steady resident customer base."}</li>
+            <li>• {data.anchors.markets >= 2 || data.anchors.population_density >= 70 ? "Dense market/population area suits pharmacies, groceries, butcheries." : "Emerging spot—lower volume but less competition."}</li>
+            <li>• Top {data.recommendations[0].category} has low saturation ({data.competitors[data.recommendations[0].category] || 0}/6 nearby). Good entry opportunity.</li>
+          </ul>
+        </div>
       </motion.div>
     );
   }
 }
+
 
 function fmt(n: number) {
   if (n >= 1000) return `${Math.round(n / 1000)}k`;
