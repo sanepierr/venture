@@ -9,8 +9,10 @@ import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth";
 import { motion } from "framer-motion";
 import { Bookmark } from "lucide-react";
+import { Chatbot } from "@/components/Chatbot";
 
 const KampalaMap = dynamic(() => import("@/components/KampalaMap"), {
+
   ssr: false,
   loading: () => (
     <div className="h-full w-full flex items-center justify-center bg-[var(--surface)] text-sm text-[var(--ink-muted)] font-mono">
@@ -114,8 +116,12 @@ export default function ExplorePage() {
             </div>
           )}
           <ResultsPanel data={data} loading={loading} error={error} />
+          {data && <Chatbot data={data} />}
         </aside>
       </div>
     </main>
   );
 }
+
+import { Chatbot } from "@/components/Chatbot";
+
