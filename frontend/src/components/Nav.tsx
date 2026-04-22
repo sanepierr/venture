@@ -4,12 +4,27 @@ import Link from "next/link";
 import { Logo } from "./Logo";
 import { useTheme } from "./ThemeProvider";
 import { useI18n } from "@/lib/i18n";
-import { Moon, Sun, ArrowUpRight } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { Moon, Sun, ArrowUpRight, User, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 
 export function Nav() {
   const { theme, toggle } = useTheme();
   const { lang, setLang, t } = useI18n();
+  const { user, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <motion.header
@@ -50,13 +65,44 @@ export function Nav() {
           >
             {theme === "light" ? <Moon size={16} /> : <Sun size={16} />}
           </button>
-          <Link
-            href="/explore"
-            className="ml-1 hidden sm:inline-flex items-center gap-1.5 bg-[var(--ink)] text-[var(--bg)] text-sm px-4 py-2 rounded-full hover:bg-[var(--accent)] transition-colors"
-          >
-            {t("nav.launch")}
-            <ArrowUpRight size={14} />
-          </Link>
+          {user ? (
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="ml-1 flex items-center gap-2 px-3 py-2 rounded-full bg-[var(--surface)] border border-[var(--border)] text-sm text-[var(--ink)] hover:border-[var(--accent)] transition-colors"
+              >
+                <User size={14} />
+                <span className="hidden sm:inline">{user.name.split(" ")[0]}</span>
+              </button>
+              {menuOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-xl bg-[var(--surface)] border border-[var(--border)] shadow-xl overflow-hidden">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 px-4 py-3 text-sm text-[var(--ink)] hover:bg-[var(--bg)] transition-colors"
+                  >
+                    <User size={14} />
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => { logout(); setMenuOpen(false); }}
+                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-[var(--ink-muted)] hover:bg-[var(--bg)] transition-colors"
+                  >
+                    <LogOut size={14} />
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="ml-1 hidden sm:inline-flex items-center gap-1.5 bg-[var(--ink)] text-[var(--bg)] text-sm px-4 py-2 rounded-full hover:bg-[var(--accent)] transition-colors"
+            >
+              Sign in
+              <ArrowUpRight size={14} />
+            </Link>
+          )}
         </div>
       </div>
     </motion.header>

@@ -4,6 +4,7 @@ import { PredictResponse } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { MapPin, Users, Store, Signpost, GraduationCap } from "lucide-react";
+import { useRef, useEffect } from "react";
 
 export function ResultsPanel({
   data,
@@ -15,6 +16,13 @@ export function ResultsPanel({
   error: string | null;
 }) {
   const { t } = useI18n();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (data && scrollRef.current) {
+      scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [data]);
 
   return (
     <div className="h-full flex flex-col">

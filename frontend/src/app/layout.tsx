@@ -4,6 +4,7 @@ import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/lib/i18n";
+import { AuthProvider } from "@/lib/auth";
 import { SmoothScroll } from "@/components/SmoothScroll";
 
 const inter = Inter({
@@ -44,7 +45,9 @@ export default function RootLayout({
       <body className="grain">
         <ThemeProvider>
           <LanguageProvider>
-            <SmoothScroll>{children}</SmoothScroll>
+            <AuthProvider>
+              <SmoothScroll>{children}</SmoothScroll>
+            </AuthProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>
