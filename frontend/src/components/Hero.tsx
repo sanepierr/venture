@@ -83,15 +83,14 @@ export function Hero() {
             <span className="reveal-line">
               {line1.map((w, i) => (
                 <span key={i} className="reveal-word">
-                  {w}
+                  {w}{" "}
                 </span>
               ))}
-              {" "}
             </span>
             <span className="reveal-line italic text-[var(--accent)]">
               {line2.map((w, i) => (
                 <span key={i} className="reveal-word">
-                  {w}
+                  {w}{" "}
                 </span>
               ))}
             </span>
