@@ -14,7 +14,7 @@ const dict = {
     "hero.title.1": "Know where",
     "hero.title.2": "to invest.",
     "hero.sub":
-      "Venture analyses any location in Kampala — schools, taxi stages, markets, and competition — then tells you which business will thrive there, how much it could earn, and whether it will survive its first year.",
+      "Venture analyses any location in Kampala. Schools, taxi stages, markets, and competition, all within reach. Then tells you which business will thrive there, how much it could earn, and whether it will survive its first year.",
     "hero.cta.primary": "Explore a location",
     "hero.cta.secondary": "See how it works",
     "hero.stat1.label": "Business types",
