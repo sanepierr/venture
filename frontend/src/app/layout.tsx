@@ -28,9 +28,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Venture , Know where to invest",
+  title: "Venture | Know where to invest",
   description:
     "AI-powered business intelligence for Ugandan entrepreneurs. Pick a location in Kampala and discover which business will thrive there.",
+  openGraph: {
+    title: "Venture | Pick the Perfect Location",
+    description: "AI-powered business intelligence for Kampala entrepreneurs.",
+    images: [{ url: "/mobile-mockup.png" }]
+  }
 };
 
 export default function RootLayout({
