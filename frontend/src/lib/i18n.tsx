@@ -11,8 +11,8 @@ const dict = {
     "nav.about": "About",
     "nav.launch": "Launch app",
     "hero.eyebrow": "Business intelligence for Uganda",
-    "hero.title.1": "Know where",
-    "hero.title.2": "to invest.",
+    "hero.title.1": "Know Where",
+    "hero.title.2": "to Invest.",
     "hero.sub":
       "Venture analyses any location in Kampala. Schools, taxi stages, markets, and competition, all within reach. Then tells you which business will thrive there, how much it could earn, and whether it will survive its first year.",
     "hero.cta.primary": "Explore a location",
