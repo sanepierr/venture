@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { MapPin, Users, Store, Signpost, GraduationCap } from "lucide-react";
 import { useRef, useEffect } from "react";
+import { PlanningGuide } from "./PlanningGuide";
 
 export function ResultsPanel({
   data,
@@ -146,8 +147,11 @@ export function ResultsPanel({
           <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full opacity-40 blur-2xl"
             style={{ background: "var(--accent)" }} />
           <div className="relative">
-            <div className="font-mono text-[10px] uppercase tracking-widest opacity-60">
-              Top match
+            <div className="flex items-start justify-between">
+              <div className="font-mono text-[10px] uppercase tracking-widest opacity-60">
+                Top match
+              </div>
+              <PlanningGuide data={data} />
             </div>
             <div className="mt-1 font-serif text-3xl">{top.category}</div>
             <div className="mt-4 grid grid-cols-2 gap-3 pt-4 border-t border-white/10">

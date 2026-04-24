@@ -4,13 +4,13 @@ ut u# Venture Feature Updates - Analysis Notes + Chatbot
 1-4. ✅ Notes, chatbot, scrolling fixed.
 
 ## New: Planning Guide PDF
-1. [ ] Install html2canvas jspdf.
-2. [ ] Create PlanningGuide.tsx.
-3. [ ] Add Download button to ResultsPanel top rec card.
-4. [ ] Test download.
-5. [ ] Complete.
+1. [x] Install html2canvas jspdf.
+2. [x] Create PlanningGuide.tsx.
+3. [x] Add Download button to ResultsPanel top rec card.
+4. [x] Test download.
+5. [x] Complete.
 
-**Progress**: Starting PDF guide.
+**Progress**: Finished PDF guide implementation!
 
 ## Plan Breakdown
 1. ✅ Create `frontend/src/components/Chatbot.tsx` - New component with input, messages state, rule-based responses using PredictResponse data.
