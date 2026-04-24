@@ -38,10 +38,6 @@ export function PlanningGuide({ data }: { data: PredictResponse }) {
           <h2 style="font-size: 24px; margin-top: 0; margin-bottom: 20px; letter-spacing: -0.02em;">Primary Opportunity: ${topRec.category}</h2>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
             <div>
-              <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">Est. Daily Revenue</div>
-              <div style="font-size: 20px; font-weight: 600;">UGX ${topRec.daily_revenue_ugx[0].toLocaleString()} - ${topRec.daily_revenue_ugx[1].toLocaleString()}</div>
-            </div>
-            <div>
               <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">Projected Monthly Gross</div>
               <div style="font-size: 20px; font-weight: 600;">UGX ${(topRec.daily_revenue_ugx[0] * 30).toLocaleString()} - ${(topRec.daily_revenue_ugx[1] * 30).toLocaleString()}</div>
             </div>
@@ -49,10 +45,19 @@ export function PlanningGuide({ data }: { data: PredictResponse }) {
               <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">12-Mo Survival Rate</div>
               <div style="font-size: 20px; font-weight: 600; color: #16a34a;">${Math.round(topRec.survival_12mo * 100)}%</div>
             </div>
-            <div>
-              <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">Competition Saturation</div>
-              <div style="font-size: 20px; font-weight: 600;">${(data.competitors[topRec.category] || 0) < 3 ? "Low" : "High"} (${data.competitors[topRec.category] || 0} Nearby)</div>
-            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 40px;">
+          <h3 style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.15em; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">Estimated Investment Capital</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 14px;">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #f9f9f9; padding-bottom: 5px;"><span>Est. Monthly Rent</span> <strong>UGX ${topRec.setup_costs.rent.toLocaleString()}</strong></div>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #f9f9f9; padding-bottom: 5px;"><span>License & Permits</span> <strong>UGX ${topRec.setup_costs.license.toLocaleString()}</strong></div>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #f9f9f9; padding-bottom: 5px;"><span>Initial Inventory</span> <strong>UGX ${topRec.setup_costs.stock.toLocaleString()}</strong></div>
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #f9f9f9; padding-bottom: 5px;"><span>Equipment & Misc</span> <strong>UGX ${topRec.setup_costs.equipment.toLocaleString()}</strong></div>
+          </div>
+          <div style="margin-top: 15px; text-align: right; font-size: 18px; font-weight: 700;">
+            Total: UGX ${(Object.values(topRec.setup_costs).reduce((a, b) => a + b, 0)).toLocaleString()}
           </div>
         </div>
 
