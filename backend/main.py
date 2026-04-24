@@ -41,11 +41,19 @@ class PredictIn(BaseModel):
     lng: float = Field(..., ge=-180, le=180)
 
 
+class SetupCosts(BaseModel):
+    rent: int
+    license: int
+    stock: int
+    equipment: int
+
+
 class Recommendation(BaseModel):
     category: str
     score: float
     daily_revenue_ugx: tuple[int, int]
     survival_12mo: float
+    setup_costs: SetupCosts
 
 
 class Anchors(BaseModel):
@@ -91,7 +99,7 @@ def predict(inp: PredictIn) -> PredictOut:
     # Combine model probability with ground-truth scoring to smooth sparse regions
     recs: list[Recommendation] = []
     for idx, cat in enumerate(CATEGORIES):
-        gt_score, (lo, hi), surv = _category_outcome(cat, f)
+        gt_score, (lo, hi), surv, costs = _category_outcome(cat, f)
         # Blended score: 60% model, 40% rule score (both in 0-1)
         model_p = proba_by_idx.get(idx, 0.0)
         score = float(np.clip(0.6 * model_p * len(CATEGORIES) / 3 + 0.4 * gt_score, 0.0, 1.0))
@@ -101,6 +109,7 @@ def predict(inp: PredictIn) -> PredictOut:
                 score=round(score, 4),
                 daily_revenue_ugx=(lo, hi),
                 survival_12mo=round(surv, 3),
+                setup_costs=SetupCosts(**costs),
             )
         )
     recs.sort(key=lambda r: r.score, reverse=True)

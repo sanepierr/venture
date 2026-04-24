@@ -28,60 +28,81 @@ export function PlanningGuide({ data }: { data: PredictResponse }) {
       // Build the HTML content
       container.innerHTML = `
         <div style="border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px;">
-          <h1 style="font-size: 32px; margin: 0; letter-spacing: -0.05em;">Venture Planning Guide</h1>
-          <p style="font-size: 18px; color: #555; margin-top: 10px;">${data.location.neighborhood} &bull; Coordinates: ${data.location.lat.toFixed(4)}, ${data.location.lng.toFixed(4)}</p>
+          <h1 style="font-size: 32px; margin: 0; letter-spacing: -0.05em;">Venture Strategic Report</h1>
+          <p style="font-size: 14px; color: #666; margin-top: 10px; font-family: monospace;">
+            ${data.location.neighborhood} | ${data.location.lat.toFixed(4)}, ${data.location.lng.toFixed(4)} | Generated on ${new Date().toLocaleDateString()}
+          </p>
         </div>
 
         <div style="margin-bottom: 40px; padding: 30px; background: #fafafa; border-radius: 16px; border: 1px solid #eaeaea;">
-          <h2 style="font-size: 28px; margin-top: 0; margin-bottom: 20px; letter-spacing: -0.02em;">Top Match: ${topRec.category}</h2>
-          <div style="display: flex; gap: 60px;">
+          <h2 style="font-size: 24px; margin-top: 0; margin-bottom: 20px; letter-spacing: -0.02em;">Primary Opportunity: ${topRec.category}</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
             <div>
-              <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">Est. Daily Revenue</div>
-              <div style="font-size: 24px; font-weight: 600;">UGX ${topRec.daily_revenue_ugx[0].toLocaleString()} - ${topRec.daily_revenue_ugx[1].toLocaleString()}</div>
+              <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">Est. Daily Revenue</div>
+              <div style="font-size: 20px; font-weight: 600;">UGX ${topRec.daily_revenue_ugx[0].toLocaleString()} - ${topRec.daily_revenue_ugx[1].toLocaleString()}</div>
             </div>
             <div>
-              <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">12-Mo Survival Rate</div>
-              <div style="font-size: 24px; font-weight: 600; color: #16a34a;">${Math.round(topRec.survival_12mo * 100)}%</div>
+              <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">Projected Monthly Gross</div>
+              <div style="font-size: 20px; font-weight: 600;">UGX ${(topRec.daily_revenue_ugx[0] * 30).toLocaleString()} - ${(topRec.daily_revenue_ugx[1] * 30).toLocaleString()}</div>
+            </div>
+            <div>
+              <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">12-Mo Survival Rate</div>
+              <div style="font-size: 20px; font-weight: 600; color: #16a34a;">${Math.round(topRec.survival_12mo * 100)}%</div>
+            </div>
+            <div>
+              <div style="font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;">Competition Saturation</div>
+              <div style="font-size: 20px; font-weight: 600;">${(data.competitors[topRec.category] || 0) < 3 ? "Low" : "High"} (${data.competitors[topRec.category] || 0} Nearby)</div>
             </div>
           </div>
         </div>
 
         <div style="display: flex; gap: 40px; margin-bottom: 50px;">
           <div style="flex: 1;">
-            <h3 style="font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">Location Anchors</h3>
-            <ul style="list-style: none; padding: 0; margin: 0; font-size: 16px; color: #333;">
-              <li style="margin-bottom: 12px; display: flex; justify-content: space-between;"><span>Schools</span> <strong>${data.anchors.schools}</strong></li>
-              <li style="margin-bottom: 12px; display: flex; justify-content: space-between;"><span>Taxi Stages</span> <strong>${data.anchors.taxi_stages}</strong></li>
-              <li style="margin-bottom: 12px; display: flex; justify-content: space-between;"><span>Markets</span> <strong>${data.anchors.markets}</strong></li>
-              <li style="margin-bottom: 12px; display: flex; justify-content: space-between;"><span>Population Density</span> <strong>${data.anchors.population_density}</strong></li>
+            <h3 style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.15em; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">Environmental Anchors</h3>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #333;">
+              <li style="margin-bottom: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding-bottom: 5px;"><span>Schools</span> <strong>${data.anchors.schools}</strong></li>
+              <li style="margin-bottom: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding-bottom: 5px;"><span>Taxi Stages</span> <strong>${data.anchors.taxi_stages}</strong></li>
+              <li style="margin-bottom: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding-bottom: 5px;"><span>Markets</span> <strong>${data.anchors.markets}</strong></li>
+              <li style="margin-bottom: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding-bottom: 5px;"><span>Pop. Density</span> <strong>${data.anchors.population_density}/km²</strong></li>
             </ul>
           </div>
           <div style="flex: 1;">
-            <h3 style="font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">Runner-Up Opportunities</h3>
-            <ul style="list-style: none; padding: 0; margin: 0; font-size: 16px;">
-              ${data.recommendations.slice(1, 4).map((r, i) => `
-                <li style="margin-bottom: 12px; display: flex; justify-content: space-between;">
-                  <span style="color: #333;">${i + 1}. ${r.category}</span>
-                  <strong style="color: #888;">${Math.round(r.score * 100)} Score</strong>
-                </li>
-              `).join('')}
-            </ul>
+            <h3 style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.15em; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 20px;">Peer Benchmarks</h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+              <thead>
+                <tr style="text-align: left; color: #aaa; font-size: 10px;">
+                  <th style="padding-bottom: 10px;">Category</th>
+                  <th style="padding-bottom: 10px;">Score</th>
+                  <th style="padding-bottom: 10px;">Comp.</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${data.recommendations.slice(1, 4).map((r) => `
+                  <tr>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #f5f5f5;">${r.category}</td>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #f5f5f5;">${Math.round(r.score * 100)}%</td>
+                    <td style="padding: 8px 0; border-bottom: 1px solid #f5f5f5;">${data.competitors[r.category] || 0}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
           </div>
         </div>
         
         <div style="background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 30px;">
-          <h3 style="font-size: 18px; margin-top: 0; margin-bottom: 20px;">Area Insights</h3>
-          <ul style="padding-left: 20px; font-size: 16px; line-height: 1.8; color: #444; margin: 0;">
-            <li style="margin-bottom: 10px;">${data.anchors.schools >= 3 ? "High school density supports education-adjacent businesses." : "Few schools; focus on general retail/food."}</li>
-            <li style="margin-bottom: 10px;">${data.anchors.taxi_stages >= 2 ? "Strong commuter traffic favors quick-service formats." : "Lower mobility area; caters to a steady resident customer base."}</li>
-            <li style="margin-bottom: 10px;">${data.anchors.markets >= 2 || data.anchors.population_density >= 70 ? "Dense market/population area suits pharmacies, groceries, butcheries." : "Emerging spot—lower volume but less competition."}</li>
+          <h3 style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 0; margin-bottom: 20px;">Strategic Analysis</h3>
+          <ul style="padding-left: 20px; font-size: 13px; line-height: 1.6; color: #444; margin: 0;">
+            <li style="margin-bottom: 10px;"><strong>Market Fit:</strong> ${data.anchors.schools >= 3 ? "Significant student population identified. Focus on high-frequency, low-margin retail." : "Residential focus suggested; prioritize logistics and household essential services."}</li>
+            <li style="margin-bottom: 10px;"><strong>Transit Advantage:</strong> ${data.anchors.taxi_stages >= 2 ? "High commuter flow supports quick-service and mobile-money concepts." : "Lower mobility suggests a stable, loyalty-driven local customer base."}</li>
+            <li style="margin-bottom: 10px;"><strong>Competition Note:</strong> ${data.competitors[topRec.category] === 0 ? "Untapped opportunity detected with zero direct competitors in the immediate radius." : "Saturation detected; success requires significant service differentiation."}</li>
           </ul>
         </div>
         
-        <div style="margin-top: 80px; text-align: center; font-size: 12px; color: #aaa; text-transform: uppercase; letter-spacing: 0.1em;">
-          Generated by Venture • Not financial advice.
+        <div style="margin-top: 80px; text-align: center; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid #eee; padding-top: 20px;">
+          CONFIDENTIAL STRATEGIC DOCUMENT &bull; Venture Analytics Engine &bull; Kampala, Uganda
         </div>
       `;
+
 
       document.body.appendChild(container);
 

@@ -48,6 +48,36 @@ CATEGORIES = [
     "Juice Bar",
 ]
 
+# Base setup costs in UGX thousands (License, Initial Stock/Tools, Equipment)
+# Rent is calculated dynamically based on location vibrancy/density
+BASE_SETUP_COSTS = {
+    "Mobile Money Agent":  {"license": 300,  "stock": 2500, "equipment": 800},
+    "Chapati Stand":       {"license": 150,  "stock": 400,  "equipment": 600},
+    "Salon":               {"license": 250,  "stock": 800,  "equipment": 3500},
+    "Pharmacy":            {"license": 1200, "stock": 8000, "equipment": 5000},
+    "Hardware Shop":       {"license": 600,  "stock": 15000, "equipment": 3000},
+    "Boda Stage":          {"license": 100,  "stock": 100,  "equipment": 100},
+    "Grocery":             {"license": 400,  "stock": 4000, "equipment": 2500},
+    "Phone Repair":        {"license": 250,  "stock": 1500, "equipment": 2000},
+    "Internet Cafe":       {"license": 500,  "stock": 1000, "equipment": 12000},
+    "Tailor":              {"license": 200,  "stock": 1200, "equipment": 1500},
+    "Restaurant":          {"license": 700,  "stock": 2500, "equipment": 8000},
+    "Bakery":              {"license": 600,  "stock": 3000, "equipment": 12000},
+    "Stationery":          {"license": 250,  "stock": 2500, "equipment": 4000},
+    "Butchery":            {"license": 450,  "stock": 1500, "equipment": 6000},
+    "Fruit Vendor":        {"license": 100,  "stock": 600,  "equipment": 200},
+    "School Supplies":     {"license": 300,  "stock": 4500, "equipment": 1500},
+    "Barbershop":          {"license": 200,  "stock": 400,  "equipment": 2500},
+    "Tea Kiosk":           {"license": 150,  "stock": 300,  "equipment": 400},
+    "Liquor Store":        {"license": 1500, "stock": 10000, "equipment": 3000},
+    "Second-hand Clothes": {"license": 350,  "stock": 6000, "equipment": 400},
+    "Electronics Repair":  {"license": 400,  "stock": 2000, "equipment": 3500},
+    "Poultry Feed":        {"license": 300,  "stock": 8000, "equipment": 1000},
+    "Printing Shop":       {"license": 500,  "stock": 3000, "equipment": 25000},
+    "Juice Bar":           {"license": 300,  "stock": 600,  "equipment": 4000},
+}
+
+
 # Base daily revenue in UGX thousands (lower, upper)
 BASE_REVENUE = {
     "Mobile Money Agent": (120, 260),
@@ -75,6 +105,7 @@ BASE_REVENUE = {
     "Printing Shop": (70, 180),
     "Juice Bar": (30, 80),
 }
+
 
 # Demand drivers — how strongly each anchor/feature influences each category's suitability.
 # Keys: schools, taxi_stages, markets, population, existing_competitors (negative effect)
@@ -200,8 +231,8 @@ def _score_category(cat: str, f: dict) -> float:
     return float(demand - 0.8 * saturation)
 
 
-def _category_outcome(cat: str, f: dict) -> tuple[float, tuple[int, int], float]:
-    """Return (score_0_1, daily_revenue_range_ugx, survival_12mo)."""
+def _category_outcome(cat: str, f: dict) -> tuple[float, tuple[int, int], float, dict[str, int]]:
+    """Return (score_0_1, daily_revenue_range_ugx, survival_12mo, setup_costs_ugx)."""
     raw = _score_category(cat, f)
     # Normalize roughly to 0-1
     score = 1 / (1 + np.exp(-0.9 * (raw - 0.5)))
@@ -211,7 +242,25 @@ def _category_outcome(cat: str, f: dict) -> tuple[float, tuple[int, int], float]
     hi = int(base_hi * mult * 1000)
     # Survival: good score + moderate competition
     survival = float(np.clip(0.35 + 0.55 * score - 0.02 * f["competitors"][cat], 0.15, 0.93))
-    return score, (lo, hi), survival
+
+    # Calculate Setup Costs
+    # Rent depends on population density and base cat needs
+    base_costs = BASE_SETUP_COSTS[cat]
+    est_rent = int((150 + 400 * f["population"]) * 1000)
+    # Adjust for categories that need more space (hardware, restaurant)
+    if cat in ["Hardware Shop", "Restaurant", "Pharmacy", "Bakery", "Printing Shop"]:
+        est_rent *= 2
+    elif cat in ["Fruit Vendor", "Boda Stage", "Chapati Stand"]:
+        est_rent //= 3
+
+    costs = {
+        "rent": est_rent,
+        "license": base_costs["license"] * 1000,
+        "stock": base_costs["stock"] * 1000,
+        "equipment": base_costs["equipment"] * 1000,
+    }
+
+    return score, (lo, hi), survival, costs
 
 
 def generate_dataset(n: int = 5000, seed: int = 42):
