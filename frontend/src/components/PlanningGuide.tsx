@@ -127,7 +127,7 @@ export function PlanningGuide({ data }: { data: PredictResponse }) {
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
       
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(\`Venture_Guide_\${data.location.neighborhood.replace(/\\s+/g, '_')}.pdf\`);
+      pdf.save(`Venture_Guide_${data.location.neighborhood.replace(/\s+/g, '_')}.pdf`);
       
       document.body.removeChild(container);
     } catch (err) {
