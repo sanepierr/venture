@@ -3,6 +3,12 @@ export type Prediction = {
   score: number;
   daily_revenue_ugx: [number, number];
   survival_12mo: number;
+  setup_costs: {
+    rent: number;
+    license: number;
+    stock: number;
+    equipment: number;
+  };
 };
 
 export type PredictResponse = {
